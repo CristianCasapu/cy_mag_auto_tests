@@ -1,0 +1,62 @@
+{
+  "priceCalculations": {
+    "singleProduct": {
+      "product": "Affirm Water Bottle",
+      "quantity": 1,
+      "expectedSubtotal": 7.00
+    },
+    "multipleQuantity": {
+      "product": "Radiant Tee",
+      "quantity": 3,
+      "expectedSubtotal": 66.00
+    },
+    "multipleProducts": [
+      {
+        "product": "Fusion Backpack",
+        "quantity": 1,
+        "price": 59.00
+      },
+      {
+        "product": "Hero Hoodie",
+        "quantity": 2,
+        "price": 108.00
+      }
+    ],
+    "expectedTotal": 167.00
+  },
+  "shippingMethods": [
+    {
+      "name": "Fixed",
+      "price": 5.00,
+      "estimatedDays": "5-7"
+    },
+    {
+      "name": "Table Rate",
+      "price": 15.00,
+      "estimatedDays": "2-3"
+    }
+  ],
+  "taxCalculation": {
+    "state": "NY",
+    "taxRate": 0.08875,
+    "description": "New York State Tax"
+  },
+  "discountCodes": [
+    {
+      "code": "SAVE10",
+      "type": "percentage",
+      "value": 10,
+      "minPurchase": 50
+    },
+    {
+      "code": "FREESHIP",
+      "type": "free_shipping",
+      "minPurchase": 75
+    },
+    {
+      "code": "EXPIRED2023",
+      "type": "expired",
+      "expectedError": "Coupon code is not valid"
+    }
+  ]
+}

@@ -1,0 +1,59 @@
+{
+  "registeredUser": {
+    "email": "test.user@example.com",
+    "password": "TestPassword123!",
+    "firstName": "John",
+    "lastName": "Doe",
+    "dateOfBirth": "01/15/1990"
+  },
+  "guestUser": {
+    "email": "guest.user@example.com",
+    "firstName": "Jane",
+    "lastName": "Smith"
+  },
+  "shippingAddresses": [
+    {
+      "firstName": "John",
+      "lastName": "Doe",
+      "company": "Test Company",
+      "streetAddress": ["123 Main Street", "Apt 4B"],
+      "city": "New York",
+      "state": "New York",
+      "stateCode": "NY",
+      "zip": "10001",
+      "country": "United States",
+      "phone": "212-555-1234",
+      "default": true
+    },
+    {
+      "firstName": "Jane",
+      "lastName": "Smith",
+      "company": "",
+      "streetAddress": ["456 Oak Avenue"],
+      "city": "Los Angeles",
+      "state": "California",
+      "stateCode": "CA",
+      "zip": "90001",
+      "country": "United States",
+      "phone": "310-555-5678",
+      "default": false
+    }
+  ],
+  "invalidUsers": [
+    {
+      "email": "invalid-email",
+      "password": "short",
+      "scenario": "invalid_email_format"
+    },
+    {
+      "email": "test@example.com",
+      "password": "123",
+      "scenario": "password_too_short"
+    },
+    {
+      "email": "",
+      "password": "ValidPassword123!",
+      "scenario": "empty_email"
+    }
+  ]
+}

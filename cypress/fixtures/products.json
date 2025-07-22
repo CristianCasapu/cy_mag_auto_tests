@@ -1,0 +1,81 @@
+[
+  {
+    "name": "Radiant Tee",
+    "url": "/radiant-tee.html",
+    "price": 22.00,
+    "category": "women",
+    "type": "configurable",
+    "size": "M",
+    "color": "Blue",
+    "alternativeSizes": ["XS", "S", "L", "XL"],
+    "alternativeColors": ["Orange", "Purple"]
+  },
+  {
+    "name": "Breathe-Easy Tank",
+    "url": "/breathe-easy-tank.html",
+    "price": 34.00,
+    "category": "women",
+    "type": "configurable",
+    "size": "S",
+    "color": "Purple",
+    "alternativeSizes": ["XS", "M", "L", "XL"],
+    "alternativeColors": ["Blue", "White", "Yellow"]
+  },
+  {
+    "name": "Hero Hoodie",
+    "url": "/hero-hoodie.html",
+    "price": 54.00,
+    "category": "men",
+    "type": "configurable",
+    "size": "L",
+    "color": "Gray",
+    "alternativeSizes": ["XS", "S", "M", "XL"],
+    "alternativeColors": ["Black", "Green"]
+  },
+  {
+    "name": "Meteor Workout Short",
+    "url": "/meteor-workout-short.html",
+    "price": 32.50,
+    "category": "men",
+    "type": "configurable",
+    "size": "32",
+    "color": "Blue",
+    "alternativeSizes": ["33", "34", "35", "36"],
+    "alternativeColors": ["Black", "Green"]
+  },
+  {
+    "name": "Affirm Water Bottle",
+    "url": "/affirm-water-bottle.html",
+    "price": 7.00,
+    "category": "gear",
+    "type": "simple",
+    "quantity": 1
+  },
+  {
+    "name": "Push It Messenger Bag",
+    "url": "/push-it-messenger-bag.html",
+    "price": 45.00,
+    "category": "gear",
+    "type": "simple",
+    "quantity": 1
+  },
+  {
+    "name": "Fusion Backpack",
+    "url": "/fusion-backpack.html",
+    "price": 59.00,
+    "category": "gear",
+    "type": "simple",
+    "quantity": 1,
+    "outOfStock": true
+  },
+  {
+    "name": "Argus All-Weather Tank",
+    "url": "/argus-all-weather-tank.html",
+    "price": 22.00,
+    "category": "men",
+    "type": "configurable",
+    "size": "M",
+    "color": "Gray",
+    "alternativeSizes": ["XS", "S", "L", "XL"]
+  }
+]

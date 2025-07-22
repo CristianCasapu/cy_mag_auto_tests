@@ -1,0 +1,34 @@
+{
+  "name": "cy_mag_auto_tests",
+  "version": "1.0.0",
+  "description": "regression testing focused around the ordering and cart mechanisms",
+  "main": "cypress.config.js",
+  "devDependencies": {
+    "cypress": "^14.5.2"
+  },
+  "scripts": {
+    "cy:open": "cypress open",
+    "cy:run": "cypress run",
+    "cy:run:chrome": "cypress run --browser chrome",
+    "cy:run:headed": "cypress run --headed",
+    "test": "cypress run",
+    "test:cart": "cypress run --spec 'cypress/e2e/cart-functionality.cy.js'",
+    "test:checkout": "cypress run --spec 'cypress/e2e/checkout-purchase.cy.js'",
+    "test:negative": "cypress run --spec 'cypress/e2e/negative-scenarios.cy.js'",
+    "test:api": "cypress run --spec 'cypress/e2e/api-validations.cy.js'",
+    "test:regression": "cypress run --spec 'cypress/e2e/advanced-regression.cy.js'",
+    "test:smoke": "cypress run --spec 'cypress/e2e/advanced-regression.cy.js' --grep 'Full Regression Smoke Test'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CristianCasapu/cy_mag_auto_tests.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/CristianCasapu/cy_mag_auto_tests/issues"
+  },
+  "homepage": "https://github.com/CristianCasapu/cy_mag_auto_tests#readme"
+}

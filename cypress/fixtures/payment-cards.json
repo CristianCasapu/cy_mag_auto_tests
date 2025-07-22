@@ -1,0 +1,73 @@
+{
+  "validCards": [
+    {
+      "type": "visa",
+      "number": "4111111111111111",
+      "cvv": "123",
+      "expMonth": "12",
+      "expYear": "2025",
+      "name": "Test User",
+      "scenario": "success"
+    },
+    {
+      "type": "mastercard",
+      "number": "5555555555554444",
+      "cvv": "123",
+      "expMonth": "12",
+      "expYear": "2025",
+      "name": "Test User",
+      "scenario": "success"
+    },
+    {
+      "type": "amex",
+      "number": "378282246310005",
+      "cvv": "1234",
+      "expMonth": "12",
+      "expYear": "2025",
+      "name": "Test User",
+      "scenario": "success"
+    }
+  ],
+  "invalidCards": [
+    {
+      "type": "visa",
+      "number": "4000000000000002",
+      "cvv": "123",
+      "expMonth": "12",
+      "expYear": "2025",
+      "name": "Test User",
+      "scenario": "declined",
+      "expectedError": "Your payment was declined"
+    },
+    {
+      "type": "visa",
+      "number": "4000000000000127",
+      "cvv": "123",
+      "expMonth": "12",
+      "expYear": "2025",
+      "name": "Test User",
+      "scenario": "insufficient_funds",
+      "expectedError": "Insufficient funds"
+    },
+    {
+      "type": "visa",
+      "number": "4111111111111111",
+      "cvv": "999",
+      "expMonth": "12",
+      "expYear": "2020",
+      "name": "Test User",
+      "scenario": "expired",
+      "expectedError": "Card has expired"
+    },
+    {
+      "type": "visa",
+      "number": "4111111111111112",
+      "cvv": "123",
+      "expMonth": "12",
+      "expYear": "2025",
+      "name": "Test User",
+      "scenario": "invalid_number",
+      "expectedError": "Invalid card number"
+    }
+  ]
+}
