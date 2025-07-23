@@ -7,7 +7,6 @@ import { TestDataGenerator } from '../utils/calculations';
 describe('Negative Test Scenarios', () => {
   let products;
   let users;
-  let paymentCards;
   let cartScenarios;
 
   before(() => {
@@ -16,9 +15,6 @@ describe('Negative Test Scenarios', () => {
     });
     cy.fixture('users').then((data) => {
       users = data;
-    });
-    cy.fixture('payment-cards').then((data) => {
-      paymentCards = data;
     });
     cy.fixture('cart-scenarios').then((data) => {
       cartScenarios = data;
@@ -51,7 +47,7 @@ describe('Negative Test Scenarios', () => {
       ProductPage.addToCart();
       
       // Should show error or reset to minimum
-      cy.get('#qty').should('have.value', '1');
+      ProductPage.getQuantityInput().should('have.value', '1');
     });
 
     it('should handle adding zero quantity to cart', () => {
@@ -126,12 +122,11 @@ describe('Negative Test Scenarios', () => {
       HomePage.clickSignIn();
       
       // Try invalid email format
-      cy.get('#email').type(invalidUser.email);
-      cy.get('#pass').type('somepassword');
-      cy.get('#send2').click();
+      HomePage.fillLoginForm(invalidUser.email, 'somepassword');
+      HomePage.submitLogin();
       
       // Should show validation error
-      cy.get('#email-error').should('contain', 'valid email');
+      cy.get(HomePage.elements.emailField + '-error').should('contain', 'valid email');
     });
 
     it('should handle login with wrong password', () => {
@@ -152,14 +147,15 @@ describe('Negative Test Scenarios', () => {
       cy.visit('/customer/account/create/');
       
       // Fill form with weak password
-      cy.get('#firstname').type('Test');
-      cy.get('#lastname').type('User');
-      cy.get('#email_address').type(TestDataGenerator.generateEmail());
-      cy.get('#password').type('weak');
-      cy.get('#password-confirmation').type('weak');
+      HomePage.fillRegistrationForm({
+        firstName: 'Test',
+        lastName: 'User',
+        email: TestDataGenerator.generateEmail(),
+        password: 'weak'
+      });
       
       // Submit
-      cy.get('#form-validate button[type="submit"]').click();
+      HomePage.submitRegistration();
       
       // Should show password strength error
       cy.get('#password-error').should('exist');

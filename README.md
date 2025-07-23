@@ -50,6 +50,10 @@ cypress/
 
 2. **Install dependencies:**
    ```bash
+   sudo sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list'
+   sudo wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+   sudo apt update
+   sudo apt install google-chrome-stable libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libnss3 libxss1 libasound2 libxtst6 xauth xvfb
    npm install
    ```
 
@@ -62,7 +66,12 @@ cypress/
 
 ### Interactive Mode (GUI)
 ```bash
-npm run cy:open
+npx cypress open
+```
+
+### Headless mode (CLI) using chrome browser
+```bash
+npx cypress run -b chrome --spec 'cypress/e2e/advanced-regression.cy.js'
 ```
 
 ### Headless Mode (CI/CD)

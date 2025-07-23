@@ -6,7 +6,6 @@ import { PriceCalculator, TestDataGenerator } from '../utils/calculations';
 describe('Checkout and Purchase Flow Tests', () => {
   let products;
   let users;
-  let paymentCards;
   let cartScenarios;
 
   before(() => {
@@ -16,9 +15,6 @@ describe('Checkout and Purchase Flow Tests', () => {
     });
     cy.fixture('users').then((data) => {
       users = data;
-    });
-    cy.fixture('payment-cards').then((data) => {
-      paymentCards = data;
     });
     cy.fixture('cart-scenarios').then((data) => {
       cartScenarios = data;
@@ -98,7 +94,7 @@ describe('Checkout and Purchase Flow Tests', () => {
     it('should complete checkout with multiple products and quantities', () => {
       const productsToOrder = [
         { ...products[0], orderQty: 2 },
-        { ...products[4], orderQty: 1 }
+        { ...products.find(p => p.type === 'simple' && p.available !== false) || products[1], orderQty: 1 }
       ];
       const shippingAddress = users.shippingAddresses[1];
       const guestEmail = TestDataGenerator.generateEmail();
@@ -154,8 +150,10 @@ describe('Checkout and Purchase Flow Tests', () => {
       const user = users.registeredUser;
       const product = products[2];
       
-      // Login first
-      cy.login(user.email, user.password);
+      // Login first (visit login page and use page object methods)
+      cy.visit('/customer/account/login/');
+      HomePage.fillLoginForm(user.email, user.password);
+      HomePage.submitLogin();
       
       // Add product to cart
       cy.addProductToCart(product);
@@ -195,8 +193,8 @@ describe('Checkout and Purchase Flow Tests', () => {
       CheckoutPage.fillGuestEmail(TestDataGenerator.generateEmail());
       
       // Clear a required field and try to continue
-      cy.get('[name="firstname"]').clear();
-      cy.get('#shipping-method-buttons-container .continue').click();
+      CheckoutPage.clearFirstName();
+      CheckoutPage.continueToPayment();
       
       // Verify validation error
       CheckoutPage.verifyValidationError('firstname', 'This is a required field');
@@ -210,11 +208,11 @@ describe('Checkout and Purchase Flow Tests', () => {
       CartPage.proceedToCheckout();
       
       // Enter invalid email
-      cy.get('#customer-email').type('invalid-email-format');
-      cy.get('#customer-email').blur();
+      CheckoutPage.fillGuestEmail('invalid-email-format');
+      cy.get(CheckoutPage.elements.emailInput).blur();
       
       // Verify email validation error
-      cy.get('#customer-email-error').should('contain', 'valid email address');
+      CheckoutPage.verifyEmailError('valid email address');
     });
 
     it('should update totals when shipping method changes', () => {

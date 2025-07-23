@@ -49,7 +49,8 @@
     "price": 7.00,
     "category": "gear",
     "type": "simple",
-    "quantity": 1
+    "quantity": 1,
+    "outOfStock": true
   },
   {
     "name": "Push It Messenger Bag",
@@ -57,7 +58,8 @@
     "price": 45.00,
     "category": "gear",
     "type": "simple",
-    "quantity": 1
+    "quantity": 1,
+    "outOfStock": true
   },
   {
     "name": "Fusion Backpack",

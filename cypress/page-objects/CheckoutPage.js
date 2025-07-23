@@ -50,30 +50,91 @@ class CheckoutPage {
       
       // Messages
       errorMessage: '.message-error',
+      emailError: '#customer-email-error',
+      fieldError: '.field-error',
+      
+      // Guest checkout
+      guestCheckoutOption: '#checkout-step-login',
+      loginOption: '.action.login',
+      
+      // Billing same as shipping
+      sameAsShippingCheckbox: '#billing-address-same-as-shipping-checkmo',
       
       // Success page
       orderSuccessPage: '.checkout-success',
-      orderNumber: '.checkout-success .order-number',
+      orderNumber: '.checkout-success > :nth-child(1) > span',
       continueShoppingButton: '.action.primary.continue'
     };
   }
 
+  waitForCheckoutPageToLoad() {
+    // Wait for any loading masks to disappear first
+    cy.get(this.elements.loadingMask).should('not.exist');
+    cy.get('body').should('not.have.class', 'checkout-loading');
+    
+    // Then wait for shipping step container
+    cy.get(this.elements.shippingStep, { timeout: 15000 }).should('exist');
+    
+    // Wait for email input to be visible and enabled
+    cy.get(this.elements.emailInput, { timeout: 15000 })
+      .should('exist')
+      .should('be.visible')
+      .should('not.be.disabled');
+    
+    return this;
+  }
+
+  verifyAllFormFieldsVisible() {
+    cy.get(this.elements.emailInput).should('be.visible');
+    cy.get(this.elements.firstNameInput).should('be.visible');
+    cy.get(this.elements.lastNameInput).should('be.visible');
+    cy.get(this.elements.streetAddress1Input).should('be.visible');
+    cy.get(this.elements.cityInput).should('be.visible');
+    cy.get(this.elements.stateSelect).should('be.visible');
+    cy.get(this.elements.postcodeInput).should('be.visible');
+    cy.get(this.elements.countrySelect).should('be.visible');
+    cy.get(this.elements.telephoneInput).should('be.visible');
+    return this;
+  }
+
   fillGuestEmail(email) {
-    cy.get(this.elements.emailInput).type(email);
+    this.waitForCheckoutPageToLoad();
+    cy.get(this.elements.emailInput)
+      .should('be.visible')
+      .should('not.be.disabled')
+      .clear()
+      .type(email);
+    return this;
+  }
+
+  clearGuestEmail() {
+    cy.get(this.elements.emailInput).should('be.visible').clear();
+    return this;
+  }
+
+  clearFirstName() {
+    cy.get(this.elements.firstNameInput).should('be.visible').clear();
+    return this;
+  }
+
+  verifyEmailError(errorMessage) {
+    cy.get(this.elements.emailError)
+      .should('be.visible')
+      .and('contain', errorMessage);
     return this;
   }
 
   fillShippingAddress(address) {
-    if (address.firstName) cy.get(this.elements.firstNameInput).clear().type(address.firstName);
-    if (address.lastName) cy.get(this.elements.lastNameInput).clear().type(address.lastName);
-    if (address.company) cy.get(this.elements.companyInput).clear().type(address.company);
-    if (address.streetAddress[0]) cy.get(this.elements.streetAddress1Input).clear().type(address.streetAddress[0]);
-    if (address.streetAddress[1]) cy.get(this.elements.streetAddress2Input).clear().type(address.streetAddress[1]);
-    if (address.city) cy.get(this.elements.cityInput).clear().type(address.city);
-    if (address.state) cy.get(this.elements.stateSelect).select(address.state);
-    if (address.zip) cy.get(this.elements.postcodeInput).clear().type(address.zip);
-    if (address.country) cy.get(this.elements.countrySelect).select(address.country);
-    if (address.phone) cy.get(this.elements.telephoneInput).clear().type(address.phone);
+    if (address.firstName) cy.get(this.elements.firstNameInput).should('be.visible').clear().type(address.firstName);
+    if (address.lastName) cy.get(this.elements.lastNameInput).should('be.visible').clear().type(address.lastName);
+    if (address.company) cy.get(this.elements.companyInput).should('be.visible').clear().type(address.company);
+    if (address.streetAddress[0]) cy.get(this.elements.streetAddress1Input).should('be.visible').clear().type(address.streetAddress[0]);
+    if (address.streetAddress[1]) cy.get(this.elements.streetAddress2Input).should('be.visible').clear().type(address.streetAddress[1]);
+    if (address.city) cy.get(this.elements.cityInput).should('be.visible').clear().type(address.city);
+    if (address.state) cy.get(this.elements.stateSelect).should('be.visible').select(address.state);
+    if (address.zip) cy.get(this.elements.postcodeInput).should('be.visible').clear().type(address.zip);
+    if (address.country) cy.get(this.elements.countrySelect).should('be.visible').select(address.country);
+    if (address.phone) cy.get(this.elements.telephoneInput).should('be.visible').clear().type(address.phone);
     return this;
   }
 
@@ -102,7 +163,7 @@ class CheckoutPage {
 
   selectPaymentMethod(method) {
     cy.get(this.elements.paymentMethodsContainer).should('be.visible');
-    cy.get(`#${method}`).check();
+    cy.get(`#${method}`).check({ force: true });
     return this;
   }
 
@@ -163,6 +224,93 @@ class CheckoutPage {
       .parent()
       .find('.field-error')
       .should('contain', errorMessage);
+    return this;
+  }
+
+  // Wait for shipping methods to load
+  waitForShippingMethods() {
+    cy.get(this.elements.shippingMethodsContainer).should('be.visible');
+    cy.get(this.elements.loadingMask).should('not.exist');
+    cy.get(this.elements.shippingMethodRadio).should('have.length.greaterThan', 0);
+    return this;
+  }
+
+  // Wait for payment methods to load
+  waitForPaymentMethods() {
+    cy.get(this.elements.paymentMethodsContainer).should('be.visible');
+    cy.get(this.elements.loadingMask).should('not.exist');
+    return this;
+  }
+
+  // Check if billing same as shipping is selected
+  isBillingSameAsShipping() {
+    return cy.get(this.elements.sameAsShippingCheckbox).then($checkbox => {
+      return $checkbox.is(':checked');
+    });
+  }
+
+  // Toggle billing same as shipping
+  toggleBillingSameAsShipping() {
+    cy.get(this.elements.sameAsShippingCheckbox).should('be.visible').click();
+    // Wait for billing form to show/hide based on checkbox state
+    cy.wait(500);
+    return this;
+  }
+
+  // Fill billing address (when different from shipping)
+  fillBillingAddress(address) {
+    // First ensure billing form is visible
+    this.isBillingSameAsShipping().then(isSame => {
+      if (isSame) {
+        this.toggleBillingSameAsShipping();
+      }
+    });
+    
+    cy.get(this.elements.billingAddressForm).should('be.visible').within(() => {
+      if (address.firstName) cy.get('[name="firstname"]').should('be.visible').clear().type(address.firstName);
+      if (address.lastName) cy.get('[name="lastname"]').should('be.visible').clear().type(address.lastName);
+      if (address.company) cy.get('[name="company"]').should('be.visible').clear().type(address.company);
+      if (address.streetAddress[0]) cy.get('[name="street[0]"]').should('be.visible').clear().type(address.streetAddress[0]);
+      if (address.streetAddress[1]) cy.get('[name="street[1]"]').should('be.visible').clear().type(address.streetAddress[1]);
+      if (address.city) cy.get('[name="city"]').should('be.visible').clear().type(address.city);
+      if (address.state) cy.get('[name="region_id"]').should('be.visible').select(address.state);
+      if (address.zip) cy.get('[name="postcode"]').should('be.visible').clear().type(address.zip);
+      if (address.country) cy.get('[name="country_id"]').should('be.visible').select(address.country);
+      if (address.phone) cy.get('[name="telephone"]').should('be.visible').clear().type(address.phone);
+    });
+    
+    return this;
+  }
+
+  // Verify checkout step is active
+  verifyActiveStep(step) {
+    const stepMap = {
+      'shipping': this.elements.shippingStep,
+      'payment': this.elements.paymentStep
+    };
+    
+    cy.get(stepMap[step]).should('have.class', '_active');
+    return this;
+  }
+
+  // Get all available shipping methods
+  getAvailableShippingMethods() {
+    return cy.get(this.elements.shippingMethodLabel).then($methods => {
+      const methods = [];
+      $methods.each((_, el) => {
+        methods.push(Cypress.$(el).text().trim());
+      });
+      return methods;
+    });
+  }
+
+  // Open order summary (mobile)
+  openOrderSummary() {
+    cy.get(this.elements.orderSummaryToggle).then($toggle => {
+      if (!$toggle.hasClass('active')) {
+        cy.wrap($toggle).click();
+      }
+    });
     return this;
   }
 }

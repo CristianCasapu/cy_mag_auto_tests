@@ -111,6 +111,10 @@ class ProductPage {
     cy.get(this.elements.addToCartButton).should('be.disabled');
     return this;
   }
+
+  getQuantityInput() {
+    return cy.get(this.elements.quantityInput);
+  }
 }
 
 export default new ProductPage();

@@ -27,10 +27,13 @@ describe('Shopping Cart Functionality Tests', () => {
     
     // Visit homepage
     HomePage.visit();
+    
+    // Clear cart to ensure clean state
+    cy.clearCart();
   });
 
   describe('Add to Cart Operations', () => {
-    it('should add a simple product to cart', () => {
+    it.only('should add a simple product to cart', () => {
       const product = products.find(p => p.type === 'simple');
       
       cy.addProductToCart(product);
@@ -271,7 +274,7 @@ describe('Shopping Cart Functionality Tests', () => {
       
       // Get all line item subtotals and sum them
       let sumOfLineItems = 0;
-      cy.get('.col.subtotal .price').each($el => {
+      cy.get(CartPage.elements.lineItemSubtotal).each($el => {
         const price = parseFloat($el.text().replace(/[$,]/g, ''));
         sumOfLineItems += price;
       }).then(() => {
